@@ -30,7 +30,7 @@ const   SERVICE 		=  "service"
 
 //==============================================================================================================================
 //	 Status types - Asset lifecycle is broken down into 5 statuses, this is part of the business logic to determine what can
-//					be done to the vehicle at points in it's lifecycle
+//					be done to the bike at points in it's lifecycle
 //==============================================================================================================================
 const   STATE_TEMPLATE  			=  0
 const   STATE_TOWNSHIP  			=  1
@@ -48,7 +48,7 @@ type  SimpleChaincode struct {
 }
 
 //==============================================================================================================================
-//	Vehicle - Defines the structure for a car object. JSON on right tells it what JSON fields to map to
+//	Bike - Defines the structure for a car object. JSON on right tells it what JSON fields to map to
 //			  that element when reading a JSON object into the struct e.g. JSON make -> Struct Make.
 //==============================================================================================================================
 type Bike struct {
@@ -66,8 +66,8 @@ type Bike struct {
 
 
 //==============================================================================================================================
-//	V5C Holder - Defines the structure that holds all the v5cIDs for vehicles that have been created.
-//				Used as an index when querying all vehicles.
+//	V5C Holder - Defines the structure that holds all the v5cIDs for bikes that have been created.
+//				Used as an index when querying all bikes.
 //==============================================================================================================================
 
 type V5C_Holder struct {
@@ -187,7 +187,7 @@ func (t *SimpleChaincode) get_caller_data(stub shim.ChaincodeStubInterface) (str
 
 //==============================================================================================================================
 //	 retrieve_v5c - Gets the state of the data at v5cID in the ledger then converts it from the stored
-//					JSON into the Vehicle struct for use in the contract. Returns the Vehcile struct.
+//					JSON into the Bike struct for use in the contract. Returns the Vehcile struct.
 //					Returns empty v if it errors.
 //==============================================================================================================================
 func (t *SimpleChaincode) retrieve_v5c(stub shim.ChaincodeStubInterface, v5cID string) (Bike, error) {
@@ -196,28 +196,28 @@ func (t *SimpleChaincode) retrieve_v5c(stub shim.ChaincodeStubInterface, v5cID s
 
 	bytes, err := stub.GetState(v5cID);
 
-	if err != nil {	fmt.Printf("RETRIEVE_V5C: Failed to invoke vehicle_code: %s", err); return v, errors.New("RETRIEVE_V5C: Error retrieving vehicle with v5cID = " + v5cID) }
+	if err != nil {	fmt.Printf("RETRIEVE_V5C: Failed to invoke bike_code: %s", err); return v, errors.New("RETRIEVE_V5C: Error retrieving bike with v5cID = " + v5cID) }
 
 	err = json.Unmarshal(bytes, &v);
 
-    if err != nil {	fmt.Printf("RETRIEVE_V5C: Corrupt vehicle record "+string(bytes)+": %s", err); return v, errors.New("RETRIEVE_V5C: Corrupt vehicle record"+string(bytes))	}
+    if err != nil {	fmt.Printf("RETRIEVE_V5C: Corrupt bike record "+string(bytes)+": %s", err); return v, errors.New("RETRIEVE_V5C: Corrupt bike record"+string(bytes))	}
 
 	return v, nil
 }
 
 //==============================================================================================================================
-// save_changes - Writes to the ledger the Vehicle struct passed in a JSON format. Uses the shim file's
+// save_changes - Writes to the ledger the Bike struct passed in a JSON format. Uses the shim file's
 //				  method 'PutState'.
 //==============================================================================================================================
 func (t *SimpleChaincode) save_changes(stub shim.ChaincodeStubInterface, v Bike) (bool, error) {
 
 	bytes, err := json.Marshal(v)
 
-	if err != nil { fmt.Printf("SAVE_CHANGES: Error converting vehicle record: %s", err); return false, errors.New("Error converting vehicle record") }
+	if err != nil { fmt.Printf("SAVE_CHANGES: Error converting bike record: %s", err); return false, errors.New("Error converting bike record") }
 
 	err = stub.PutState(v.V5cID, bytes)
 
-	if err != nil { fmt.Printf("SAVE_CHANGES: Error storing vehicle record: %s", err); return false, errors.New("Error storing vehicle record") }
+	if err != nil { fmt.Printf("SAVE_CHANGES: Error storing bike record: %s", err); return false, errors.New("Error storing bike record") }
 
 	return true, nil
 }
@@ -240,7 +240,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 
 		argPos := 1
 
-		if function == "service_bike" {																// If its a scrap vehicle then only two arguments are passed (no update value) all others have three arguments and the v5cID is expected in the last argument
+		if function == "service_bike" {																// If its a scrap bike then only two arguments are passed (no update value) all others have three arguments and the v5cID is expected in the last argument
 			argPos = 0
 		}
 
@@ -256,11 +256,11 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 
 				if 		   function == "authority_to_township" { return t.authority_to_township(stub, v, caller, caller_affiliation, args[0], "township")
 				} else if  function == "township_to_station"   { return t.township_to_station(stub, v, caller, caller_affiliation, args[0], "station")
-				} else if  function == "station_to_private" 	   { return t.station_to_private(stub, v, caller, caller_affiliation, args[0], "private")
+				} else if  function == "station_to_private"		{ return t.station_to_private(stub, v, caller, caller_affiliation, args[0], "private")
 				} else if  function == "private_to_station"  { return t.private_to_station(stub, v, caller, caller_affiliation, args[0], "station")
-				} else if  function == "station_to_service"  { return t.station_to_private(stub, v, caller, caller_affiliation, args[0], "service")
-				} else if  function == "service_to_station" { return t.private_to_service(stub, v, caller, caller_affiliation, args[0], "station")
-				}
+				} else if  function == "station_to_service"  { return t.station_to_service(stub, v, caller, caller_affiliation, args[0], "service")
+				} //else if  function == "service_to_station" { return t.service_to_station(stub, v, caller, caller_affiliation, args[0], "station")
+				//}
 
 		} else if function == "update_make"  	    { return t.update_make(stub, v, caller, caller_affiliation, args[0])
 		} else if function == "update_model"        { return t.update_model(stub, v, caller, caller_affiliation, args[0])
@@ -336,13 +336,13 @@ func (t *SimpleChaincode) create_bike(stub shim.ChaincodeStubInterface, caller s
 																		return nil, errors.New("Invalid v5cID provided")
 	}
 
-	err = json.Unmarshal([]byte(bike_json), &v)							// Convert the JSON defined above into a vehicle object for go
+	err = json.Unmarshal([]byte(bike_json), &v)							// Convert the JSON defined above into a bike object for go
 
 																		if err != nil { return nil, errors.New("Invalid JSON object") }
 
 	record, err := stub.GetState(v.V5cID) 								// If not an error then a record exists so cant create a new car with this V5cID as it must be unique
 
-																		if record != nil { return nil, errors.New("Vehicle already exists") }
+																		if record != nil { return nil, errors.New("Bike already exists") }
 
 	if 	caller_affiliation != AUTHORITY {							// Only the regulator can create a new v5c
 
@@ -448,7 +448,7 @@ func (t *SimpleChaincode) township_to_station(stub shim.ChaincodeStubInterface, 
 //=================================================================================================================================
 //	 private_to_private
 //=================================================================================================================================
-//func (t *SimpleChaincode) private_to_private(stub shim.ChaincodeStubInterface, v Vehicle, caller string, caller_affiliation string, recipient_name string, recipient_affiliation string) ([]byte, error) {
+//func (t *SimpleChaincode) private_to_private(stub shim.ChaincodeStubInterface, v Bike, caller string, caller_affiliation string, recipient_name string, recipient_affiliation string) ([]byte, error) {
 //
 //	if 		v.Status				== STATE_PRIVATE_OWNERSHIP	&&
 //			v.Owner					== caller					&&
@@ -534,12 +534,12 @@ func (t *SimpleChaincode) station_to_service(stub shim.ChaincodeStubInterface, v
 					v.Status = STATE_SERVICE
 
 	} else {
-        return nil, errors.New(fmt.Sprintf("Permission Denied. private_to_service. %v %v === %v, %v === %v, %v === %v, %v === %v, %v === %v", v, v.Status, STATE_STATION, v.Owner, caller, caller_affiliation, STATION, recipient_affiliation, SERVICE, v.Serviced, false))
+        return nil, errors.New(fmt.Sprintf("Permission Denied. station_to_service. %v %v === %v, %v === %v, %v === %v, %v === %v, %v === %v", v, v.Status, STATE_STATION, v.Owner, caller, caller_affiliation, STATION, recipient_affiliation, SERVICE, v.Serviced, false))
 	}
 
 	_, err := t.save_changes(stub, v)
 
-															if err != nil { fmt.Printf("PRIVATE_TO_SERVICE: Error saving changes: %s", err); return nil, errors.New("Error saving changes") }
+															if err != nil { fmt.Printf("STATION_TO_SERVICE: Error saving changes: %s", err); return nil, errors.New("Error saving changes") }
 
 	return nil, nil
 
@@ -705,26 +705,26 @@ func (t *SimpleChaincode) service_bike(stub shim.ChaincodeStubInterface, v Bike,
 //=================================================================================================================================
 //	 Read Functions
 //=================================================================================================================================
-//	 get_vehicle_details
+//	 get_bike_details
 //=================================================================================================================================
 func (t *SimpleChaincode) get_bike_details(stub shim.ChaincodeStubInterface, v Bike, caller string, caller_affiliation string) ([]byte, error) {
 
 	bytes, err := json.Marshal(v)
 
-																if err != nil { return nil, errors.New("GET_VEHICLE_DETAILS: Invalid vehicle object") }
+																if err != nil { return nil, errors.New("GET_BIKE_DETAILS: Invalid bike object") }
 
 	if 		v.Owner				== caller		||
 			caller_affiliation	== AUTHORITY	{
 
 					return bytes, nil
 	} else {
-																return nil, errors.New("Permission Denied. get_vehicle_details")
+																return nil, errors.New("Permission Denied. get_bike_details")
 	}
 
 }
 
 //=================================================================================================================================
-//	 get_vehicles
+//	 get_bikes
 //=================================================================================================================================
 
 func (t *SimpleChaincode) get_bikes(stub shim.ChaincodeStubInterface, caller string, caller_affiliation string) ([]byte, error) {
