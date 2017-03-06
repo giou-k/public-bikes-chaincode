@@ -187,7 +187,7 @@ func (t *SimpleChaincode) get_caller_data(stub shim.ChaincodeStubInterface) (str
 
 //==============================================================================================================================
 //	 retrieve_v5c - Gets the state of the data at v5cID in the ledger then converts it from the stored
-//					JSON into the Bike struct for use in the contract. Returns the Vehcile struct.
+//					JSON into the Bike struct for use in the contract. Returns the Bike struct.
 //					Returns empty v if it errors.
 //==============================================================================================================================
 func (t *SimpleChaincode) retrieve_v5c(stub shim.ChaincodeStubInterface, v5cID string) (Bike, error) {
@@ -308,7 +308,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 //=================================================================================================================================
 //	 Create Function
 //=================================================================================================================================
-//	 Create Bike - Creates the initial JSON for the vehcile and then saves it to the ledger.
+//	 Create Bike - Creates the initial JSON for the bike and then saves it to the ledger.
 //=================================================================================================================================
 func (t *SimpleChaincode) create_bike(stub shim.ChaincodeStubInterface, caller string, caller_affiliation string, v5cID string) ([]byte, error) {
 	var v Bike

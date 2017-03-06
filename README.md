@@ -1,1 +1,1 @@
-# public-bikes-chaincode
+# public-bikes-chaincode-v1
