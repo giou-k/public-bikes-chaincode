@@ -1,9 +1,0 @@
-all : 		server13 client13
-server13:		server13.o
-		gcc -o server13 server13.o
-client13:		client13.o
-		gcc -o client13 client13.o
-server13.o:	server13.c first13.h
-		gcc -c server13.c
-client13.o:	client13.c first13.h
-		gcc -c client13.c
