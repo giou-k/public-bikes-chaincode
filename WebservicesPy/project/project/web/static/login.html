@@ -1,0 +1,32 @@
+        <div id="main-container">
+            <div id="main">
+                <h1>
+                    project web 2016
+                </h1>
+                <div id="login-form">
+                    <form action="/auth/login/" method="post" id="login_form">
+                        <fieldset>
+                            <label for="username">Email</label>
+                            <input autocapitalize="off" autocorrect="off" class="text-input" id="username" name="username" tabindex="1" type="text" value="">
+                        </fieldset>
+
+                        <fieldset>
+                            <label for="password">Password</label>
+                            <input class="text-input" id="password" name="password" tabindex="2" type="password" value="">
+                        </fieldset>
+                        <fieldset>
+                            <span class="errormessage">{{errormessage}}</span>
+                        </fieldset>
+
+                        <div id="form_btn">
+                            <input id="signin-btn" class="btn btn-blue" type="submit" value="Sign In" tabindex="3">
+                            <!-- <a href="/sb/"><input id="inscription-btn" class="btn btn-red" value="Inscription" tabindex="3"></a> -->
+                        </div>
+                    </form>
+
+                    <form action="/register/" method="get">
+                        <input id="register-btn" class="btn btn-blue" type="submit" value="Register" tabindex="3">
+                    </form>
+                </div>
+            </div>
+        </div>

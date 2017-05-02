@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en" ng-app="RDash">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Project Web 2016</title>
+  <!-- STYLES -->
+  <!-- build:css static/lib/css/main.min.css -->
+  <link rel="stylesheet" type="text/css" href="../static/components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../static/components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="../static/components/rdash-ui/dist/css/rdash.min.css">
+  <!-- endbuild -->
+  <!-- SCRIPTS -->
+  <!-- build:js static/lib/js/main.min.js -->
+  <script type="text/javascript" src="../static/components/angular/angular.min.js"></script>
+  <script type="text/javascript" src="../static/components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script type="text/javascript" src="../static/components/angular-cookies/angular-cookies.min.js"></script>
+  <script type="text/javascript" src="../static/components/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <script type="text/javascript" src="../static/js/directives/widget.js"></script>
+  <script type="text/javascript" src="../static/js/directives/loading.js"></script>
+  <script type="text/javascript" src="../static/js/directives/widget-header.js"></script>
+  <script type="text/javascript" src="../static/js/directives/widget-body.js"></script>
+  <script type="text/javascript" src="../static/js/directives/widget-footer.js"></script>
+  <script type="text/javascript" src="../static/js/module.js"></script>
+  <script type="text/javascript" src="../static/js/routes.js"></script>
+  <!--<script type="text/javascript" src="../static/js/dashboard.min.js"></script>-->
+  <script type="text/javascript" src="../static/js/controllers/maps-ctrl.js"></script>
+  <script src='//maps.googleapis.com/maps/api/js?key=AIzaSyCNVts5q1T_j5LIGjC3hTp1Kj9_F9DwpGE'></script>
+  <script src='../static/node_modules/lodash/lodash.min.js'></script>
+  <script src='../static/node_modules/angular-simple-logger/dist/angular-simple-logger.min.js'></script>
+  <script src='../static/node_modules/angular-google-maps/dist/angular-google-maps.min.js'></script>
+  <!--<script src="../static/components/angular/angular.min.js"></script>-->
+  <script src="../static/components/leaflet/dist/leaflet.js"></script>
+  <script src="../static/components/leaflet/dist/angular-leaflet-directive.min.js"></script>
+  <link rel="stylesheet" href="../static/css/leaflet.css" />
+    <!-- endbuild -->
+  <!-- Custom Scripts -->
+
+
+
+</head>
+<body ng-controller="MasterCtrl">
+  <div id="page-wrapper" ng-class="{'open': toggle}" ng-cloak>
+
+
+    <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+          <ul class="sidebar">
+            <li class="sidebar-main">
+              <a ng-click="toggleSidebar()">
+                Project Web
+                <span class="menu-icon glyphicon glyphicon-transfer"></span>
+              </a>
+            </li>
+            <li class="sidebar-title"><span>Admin's Panel</span></li>
+            <li class="sidebar-list">
+              <a href="/stations">Stations</a>
+            </li>
+            <li class="sidebar-list">
+              <a href="/">Insert Station</a>
+            </li>
+          <li class="sidebar-list">
+            <a href="/">Users</a>
+          </li>
+          </ul>
+        </div>
+    <!-- End Sidebar -->
+
+    <div id="content-wrapper">
+      <div class="page-content">
+
+
+
+        <!-- Header Bar -->
+        <div class="row header">
+          <div class="col-xs-12">
+            <div class="user pull-right">
+              <div class="item dropdown" uib-dropdown>
+                <a href="#" class="dropdown-toggle" uib-dropdown-toggle>
+                  <img src="static/img/avatar.jpg">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li class="dropdown-header">
+                    admin
+                  </li>
+                  <li class="divider"></li>
+                  <li class="divider"></li>
+                  <li class="link">
+                    <a href="/auth/logout/">
+                      Logout
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="meta">
+              <div class="page">
+                  <font size="3">PROJECT WEB!</font>
+              </div>
+              <div class="breadcrumb-links">
+                  <font size="3">(page 2) Insert new station</font>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- End Header Bar -->
+
+        <!-- Main Content -->
+        <div ui-view>
+
+        </div>
+
+      </div><!-- End Page Content -->
+    </div><!-- End Content Wrapper -->
+  </div><!-- End Page Wrapper -->
+</body>
+</html>

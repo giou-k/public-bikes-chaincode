@@ -1,0 +1,19 @@
+<md-sidenav md-is-locked-open="$mdMedia('gt-sm')" md-component-id="left"
+            class="md-whiteframe-z2 md-sidenav-left">
+  <md-toolbar md-theme="custom" class="md-hue-1 md-whiteframe-z2">
+    <md-button layout="row" layout-align="center center" class="md-toolbar-tools md-warn"
+              ui-sref="home.login">
+      <h1>Web</h1>
+    </md-button>
+  </md-toolbar>
+
+</md-sidenav>
+
+<div layout="column" flex>
+    <md-toolbar layout="row" layout-align="end center">
+      <md-menu-item><md-button ng-click="$mdCloseMenu()" ui-sref="login">Log out</md-button></md-menu-item>
+    </md-toolbar>
+    <md-content flex class="md-padding page-content">
+        <div ui-view></div>
+    </md-content>
+</div>
