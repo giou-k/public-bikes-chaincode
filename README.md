@@ -1,6 +1,12 @@
 # Title 
-public-bikes-chaincode. A smart-contract (chaincode) developed for my master thesis using Hyperledger Fabric *v0.6*.
+A smart-contract (chaincode) developed for my master thesis using Hyperledger Fabric **v0.6**.
 
+## Install
+`git clone https://github.com/giou-k/public-bikes-chaincode.git`
+
+**Dependencies:** 
+- Hyperledger Fabric v0.6
+- Golang
 
 ## Usage
 
